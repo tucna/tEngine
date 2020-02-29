@@ -21,6 +21,6 @@ int App::Go()
 
 void App::DoFrame()
 {
-  const float t = m_timer.Peek();
-  LogNumber(t);
+  m_window.GetGraphics().Clear(0.5, 0, 0);
+  m_window.GetGraphics().EndFrame();
 }

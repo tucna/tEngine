@@ -4,25 +4,25 @@
 
 MainWindow::MainWindow(uint16_t width, uint16_t height, std::string_view title) noexcept
 {
-  WNDCLASSEX wc = {};
-  wc.cbSize = sizeof(wc);
-  wc.style = CS_OWNDC;
-  wc.lpfnWndProc = WndProc;
-  wc.cbClsExtra = 0;
-  wc.cbWndExtra = 0;
-  wc.hInstance = GetModuleHandle(nullptr);
-  wc.hIcon = nullptr;
-  wc.hCursor = nullptr;
-  wc.hbrBackground = nullptr;
-  wc.lpszMenuName = nullptr;
-  wc.lpszClassName = wndClassName;
-  wc.hIconSm = nullptr;
+  m_wc = {};
+  m_wc.cbSize = sizeof(m_wc);
+  m_wc.style = CS_OWNDC;
+  m_wc.lpfnWndProc = WndProc;
+  m_wc.cbClsExtra = 0;
+  m_wc.cbWndExtra = 0;
+  m_wc.hInstance = GetModuleHandle(nullptr);
+  m_wc.hIcon = nullptr;
+  m_wc.hCursor = nullptr;
+  m_wc.hbrBackground = nullptr;
+  m_wc.lpszMenuName = nullptr;
+  m_wc.lpszClassName = wndClassName;
+  m_wc.hIconSm = nullptr;
 
-  RegisterClassEx(&wc);
+  RegisterClassEx(&m_wc);
 
   // Fix the window size based on the client size TODO
 
-  hWnd = CreateWindowEx(
+  m_hWnd = CreateWindowEx(
     0, wndClassName,
     title.data(),
     WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
@@ -30,7 +30,9 @@ MainWindow::MainWindow(uint16_t width, uint16_t height, std::string_view title) 
     nullptr, nullptr, GetModuleHandle(nullptr), nullptr
   );
 
-  ShowWindow(hWnd, SW_SHOW);
+  ShowWindow(m_hWnd, SW_SHOW);
+
+  m_graphics = std::make_unique<Graphics>(m_hWnd);
 }
 
 MainWindow::~MainWindow() noexcept
