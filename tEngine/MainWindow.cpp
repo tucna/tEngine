@@ -1,4 +1,5 @@
 #include "Common.h"
+
 #include "MainWindow.h"
 #include "WindowsMessageMap.h"
 

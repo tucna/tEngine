@@ -1,11 +1,13 @@
 #pragma once
 
-#include <d3d11.h>
-#include <Windows.h>
-#include <wrl.h>
+#include "Common.h"
+
+class Bindable;
 
 class Graphics
 {
+  friend class Bindable;
+
 public:
   Graphics(HWND hWnd);
   Graphics(const Graphics&) = delete;

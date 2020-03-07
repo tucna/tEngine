@@ -1,10 +1,11 @@
+#include "Common.h"
+
 #include <string>
 
 #include "App.h"
-#include "Common.h"
 
 App::App() :
-  m_window(640, 480, "Basic window")
+  m_window(800, 600, "Basic window")
 {
 }
 
