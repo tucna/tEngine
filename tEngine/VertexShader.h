@@ -13,6 +13,8 @@ public:
 
   void Bind(Graphics& gfx) noexcept override;
 
+  ID3DBlob* GetBytecode() const noexcept { return m_blob.Get(); }
+
 private:
   Microsoft::WRL::ComPtr<ID3DBlob> m_blob;
   Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;

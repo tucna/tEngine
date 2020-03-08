@@ -50,3 +50,8 @@ void Graphics::Clear(float r, float g, float b) noexcept
 
   m_context->ClearRenderTargetView(m_target.Get(), color);
 }
+
+void Graphics::DrawIndexed(UINT count) noexcept
+{
+  m_context->DrawIndexed(count, 0u, 0u);
+}
