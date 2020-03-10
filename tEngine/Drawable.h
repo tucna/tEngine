@@ -5,9 +5,10 @@
 #include <memory>
 #include <vector>
 
-#include "Bindable.h"
 #include "Graphics.h"
 #include "IndexBuffer.h"
+
+class Bindable;
 
 class Drawable
 {

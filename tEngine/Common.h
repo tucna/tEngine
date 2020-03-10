@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <exception>
+#include <stdint.h>
 #include <Windows.h>
 #include <wrl.h>
 

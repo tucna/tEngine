@@ -4,5 +4,6 @@ SamplerState splr;
 
 float4 main(float2 tc : TexCoord) : SV_Target
 {
-  return tex.Sample(splr, tc);
+  //return tex.Sample(splr, tc);
+  return float4(1, 0, 0, 1);
 }

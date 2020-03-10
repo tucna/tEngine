@@ -35,8 +35,20 @@ Graphics::Graphics(HWND hWnd)
   );
 
   Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
-  m_swap->GetBuffer(0, __uuidof(ID3D11Resource), &backBuffer);
-  m_device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_target);
+  CHECK_HR(m_swap->GetBuffer(0, __uuidof(ID3D11Resource), &backBuffer));
+  CHECK_HR(m_device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_target));
+
+  m_context->OMSetRenderTargets(1u, m_target.GetAddressOf(), nullptr);
+
+  D3D11_VIEWPORT vp;
+  vp.Width = 800.0f;
+  vp.Height = 600.0f;
+  vp.MinDepth = 0.0f;
+  vp.MaxDepth = 1.0f;
+  vp.TopLeftX = 0.0f;
+  vp.TopLeftY = 0.0f;
+
+  m_context->RSSetViewports(1u, &vp);
 }
 
 void Graphics::EndFrame()

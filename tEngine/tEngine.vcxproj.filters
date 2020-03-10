@@ -60,16 +60,7 @@
     <ClCompile Include="Topology.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IndexedTriangleList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Drawable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawableBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sheet.cpp">
