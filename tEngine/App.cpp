@@ -6,6 +6,8 @@
 #include "App.h"
 #include "Sheet.h"
 
+using namespace DirectX;
+
 App::App() :
   m_window(800, 600, "Basic window")
 {
@@ -18,6 +20,8 @@ App::App() :
   std::uniform_real_distribution<float> cdist{ 0.0f,1.0f };
 
   m_drawables.push_back(std::make_unique<Sheet>(m_window.GetGraphics(), rng, adist, ddist, odist, rdist));
+
+  m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(800, 600, 0.5f, 100.0f));
 }
 
 int App::Go()
@@ -36,6 +40,7 @@ void App::DoFrame()
   const auto dt = m_timer.Mark() * 1;
 
   m_window.GetGraphics().Clear(0, 0, 0);
+  m_window.GetGraphics().SetCamera(m_camera.GetMatrix());
 
   for (auto& d : m_drawables)
   {

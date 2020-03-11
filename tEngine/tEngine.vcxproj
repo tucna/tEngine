@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bindable.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Sheet.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
+    <ClCompile Include="TransformConstantBuffer.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexLayout.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -166,6 +168,8 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="Graphics.h" />
@@ -180,6 +184,7 @@
     <ClInclude Include="Sheet.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
+    <ClInclude Include="TransformConstantBuffer.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexLayout.h" />
     <ClInclude Include="VertexShader.h" />

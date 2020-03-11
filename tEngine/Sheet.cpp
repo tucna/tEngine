@@ -5,6 +5,7 @@
 #include "Sampler.h"
 #include "Sheet.h"
 #include "Topology.h"
+#include "TransformConstantBuffer.h"
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 
@@ -66,7 +67,7 @@ Sheet::Sheet(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<fl
     SetIndexFromStatic();
   }
 
-  //AddBind(std::make_unique<TransformCbuf>(gfx, *this)); TUCNA
+  AddBind(std::make_unique<TransformConstantBuffer>(gfx, *this));
 }
 
 void Sheet::Update(float dt) noexcept
