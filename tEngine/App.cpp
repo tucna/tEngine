@@ -4,6 +4,7 @@
 #include <string>
 
 #include "App.h"
+#include "Box.h"
 #include "Sheet.h"
 
 using namespace DirectX;
@@ -19,9 +20,10 @@ App::App() :
   std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
   std::uniform_real_distribution<float> cdist{ 0.0f,1.0f };
 
-  m_drawables.push_back(std::make_unique<Sheet>(m_window.GetGraphics(), rng, adist, ddist, odist, rdist));
+  //m_drawables.push_back(std::make_unique<Sheet>(m_window.GetGraphics(), rng, adist, ddist, odist, rdist));
+  m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics()));
 
-  m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(800, 600, 0.5f, 100.0f));
+  m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 100.0f));
 }
 
 int App::Go()

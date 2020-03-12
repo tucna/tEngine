@@ -33,7 +33,7 @@ public:
 
     for (size_t i = 0; i < m_indices.size(); i += 3)
     {
-      auto& v0 = m_vertices[m_indices[i]];
+      auto& v0 = m_vertices[m_indices[i + 0]];
       auto& v1 = m_vertices[m_indices[i + 1]];
       auto& v2 = m_vertices[m_indices[i + 2]];
 
