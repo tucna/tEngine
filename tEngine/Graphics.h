@@ -23,8 +23,8 @@ public:
   void SetProjection(DirectX::FXMMATRIX projection) noexcept { m_projection = projection; }
   void SetCamera(DirectX::FXMMATRIX camera) noexcept { m_camera = camera; }
 
-  DirectX::XMMATRIX GetProjection() const noexcept { return m_projection; }
-  DirectX::XMMATRIX GetCamera() const noexcept { return m_camera; }
+  DirectX::XMMATRIX GetProjectionMatrix() const noexcept { return m_projection; }
+  DirectX::XMMATRIX GetViewMatrix() const noexcept { return m_camera; }
 
 private:
   Microsoft::WRL::ComPtr<ID3D11Device> m_device;

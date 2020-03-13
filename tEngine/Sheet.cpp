@@ -9,17 +9,13 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 
-Sheet::Sheet(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist) :
-  r(rdist(rng)),
-  droll(ddist(rng)),
-  dpitch(ddist(rng)),
-  dyaw(ddist(rng)),
-  dphi(odist(rng)),
-  dtheta(odist(rng)),
-  dchi(odist(rng)),
-  chi(adist(rng)),
-  theta(adist(rng)),
-  phi(adist(rng))
+Sheet::Sheet(Graphics& gfx) :
+  m_vx(0.0f),
+  m_vy(0.0f),
+  m_vz(0.0f),
+  m_pitch(0.0f),
+  m_roll(0.0f),
+  m_yaw(0.0f)
 {
   if (!IsStaticInitialized())
   {
@@ -45,11 +41,11 @@ Sheet::Sheet(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<fl
 
     AddStaticBind(std::make_unique<Sampler>(gfx));
 
-    auto pvs = std::make_unique<VertexShader>(gfx, L"TextureVS.cso");
+    auto pvs = std::make_unique<VertexShader>(gfx, L"Texture_VS.cso");
     auto pvsbc = pvs->GetBytecode();
     AddStaticBind(std::move(pvs));
 
-    AddStaticBind(std::make_unique<PixelShader>(gfx, L"TexturePS.cso"));
+    AddStaticBind(std::make_unique<PixelShader>(gfx, L"Texture_PS.cso"));
 
     AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.m_indices));
 
@@ -72,17 +68,13 @@ Sheet::Sheet(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<fl
 
 void Sheet::Update(float dt) noexcept
 {
-  roll += droll * dt;
-  pitch += dpitch * dt;
-  yaw += dyaw * dt;
-  theta += dtheta * dt;
-  phi += dphi * dt;
-  chi += dchi * dt;
+  m_roll += 0.5f * dt;
+  m_pitch += 0.5f * dt;
+  m_yaw += 0.5f * dt;
 }
 
 DirectX::XMMATRIX Sheet::GetTransformXM() const noexcept
 {
-  return DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
-    DirectX::XMMatrixTranslation(r, 0.0f, 0.0f) *
-    DirectX::XMMatrixRotationRollPitchYaw(theta, phi, chi);
+  return DirectX::XMMatrixRotationRollPitchYaw(m_pitch, m_yaw, m_roll) *
+    DirectX::XMMatrixTranslation(m_vx, m_vy, m_vz);
 }

@@ -16,6 +16,7 @@ public:
 private:
   struct Transformations
   {
+    DirectX::XMMATRIX model;
     DirectX::XMMATRIX modelViewProj;
   };
 

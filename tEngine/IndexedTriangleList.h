@@ -41,7 +41,7 @@ public:
       const auto p1 = XMLoadFloat3(&v1.pos);
       const auto p2 = XMLoadFloat3(&v2.pos);
 
-      const auto n = DirectX::XMVector3Normalize(XMVector3Cross((p1 - p0), (p2 - p0)));
+      const auto n = DirectX::XMVector3Normalize(DirectX::XMVector3Cross((p1 - p0), (p2 - p0)));
 
       DirectX::XMStoreFloat3(&v0.n, n);
       DirectX::XMStoreFloat3(&v1.n, n);
