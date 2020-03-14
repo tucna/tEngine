@@ -1,5 +1,7 @@
 #include "InputLayout.h"
 
+using namespace Bind;
+
 InputLayout::InputLayout(Graphics& gfx, const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout, ID3DBlob* vertexShaderBytecode)
 {
   CHECK_HR(GetDevice(gfx)->CreateInputLayout(
@@ -10,7 +12,7 @@ InputLayout::InputLayout(Graphics& gfx, const std::vector<D3D11_INPUT_ELEMENT_DE
   ));
 }
 
-void InputLayout::Bind(Graphics & gfx) noexcept
+void InputLayout::Bind(Graphics& gfx) noexcept
 {
   GetContext(gfx)->IASetInputLayout(m_inputLayout.Get());
 }

@@ -1,11 +1,13 @@
 #pragma once
 
+#define NOMINMAX
+#include <Windows.h>
+
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <exception>
 #include <stdint.h>
-#include <Windows.h>
 #include <wrl.h>
 
 #pragma comment(lib,"d3dcompiler.lib")

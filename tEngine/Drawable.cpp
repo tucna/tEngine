@@ -12,14 +12,14 @@ void Drawable::Draw(Graphics& gfx) const noexcept
   gfx.DrawIndexed(m_indexBuffer->GetCount());
 }
 
-void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept
+void Drawable::AddBind(std::unique_ptr<Bind::Bindable> bind) noexcept
 {
-  assert("*Must* use AddIndexBuffer to bind index buffer" && typeid(*bind) != typeid(IndexBuffer));
+  assert("*Must* use AddIndexBuffer to bind index buffer" && typeid(*bind) != typeid(Bind::IndexBuffer));
 
   m_binds.push_back(std::move(bind));
 }
 
-void Drawable::AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept
+void Drawable::AddIndexBuffer(std::unique_ptr<class Bind::IndexBuffer> ibuf) noexcept
 {
   assert("Attempting to add index buffer a second time" && m_indexBuffer == nullptr);
 

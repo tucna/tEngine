@@ -2,6 +2,9 @@
 
 #include "Bindable.h"
 
+namespace Bind
+{
+
 class Topology : public Bindable
 {
 public:
@@ -13,3 +16,4 @@ private:
   D3D11_PRIMITIVE_TOPOLOGY m_type;
 };
 
+}

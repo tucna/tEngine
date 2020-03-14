@@ -28,31 +28,31 @@ Box::Box(Graphics& gfx, DirectX::XMFLOAT3 material) :
     auto model = Cube::MakeIndependent<Vertex>();
     model.SetNormalsIndependentFlat();
 
-    AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.m_vertices));
+    AddStaticBind(std::make_unique<Bind::VertexBuffer>(gfx, model.m_vertices));
 
-    auto pvs = std::make_unique<VertexShader>(gfx, L"Phong_VS.cso");
+    auto pvs = std::make_unique<Bind::VertexShader>(gfx, L"Phong_VS.cso");
     auto pvsbc = pvs->GetBytecode();
     AddStaticBind(std::move(pvs));
 
-    AddStaticBind(std::make_unique<PixelShader>(gfx, L"Phong_PS.cso"));
+    AddStaticBind(std::make_unique<Bind::PixelShader>(gfx, L"Phong_PS.cso"));
 
-    AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.m_indices));
+    AddStaticIndexBuffer(std::make_unique<Bind::IndexBuffer>(gfx, model.m_indices));
 
     const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
     {
       { "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
       { "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
     };
-    AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
+    AddStaticBind(std::make_unique<Bind::InputLayout>(gfx, ied, pvsbc));
 
-    AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+    AddStaticBind(std::make_unique<Bind::Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
   }
   else
   {
     SetIndexFromStatic();
   }
 
-  AddBind(std::make_unique<TransformConstantBuffer>(gfx, *this));
+  AddBind(std::make_unique<Bind::TransformConstantBuffer>(gfx, *this));
 
   struct PSMaterialConstant
   {
@@ -61,7 +61,7 @@ Box::Box(Graphics& gfx, DirectX::XMFLOAT3 material) :
   } colorConst;
 
   colorConst.color = material;
-  AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
+  AddBind(std::make_unique<Bind::PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
 
   XMStoreFloat3x3(&m_model, XMMatrixScaling(5.0f, 5.0f, 5.0f));
 }

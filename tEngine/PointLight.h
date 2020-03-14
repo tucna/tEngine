@@ -27,6 +27,7 @@ private:
   };
 
   PointLightCBuf m_cbData;
-  mutable PixelConstantBuffer<PointLightCBuf> m_cbuf;
+
+  mutable Bind::PixelConstantBuffer<PointLightCBuf> m_cbuf;
 };
 

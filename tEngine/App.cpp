@@ -10,7 +10,8 @@ using namespace DirectX;
 
 App::App() :
   m_window(800, 600, "Basic window"),
-  m_light(m_window.GetGraphics())
+  m_light(m_window.GetGraphics()),
+  m_suzanne(m_window.GetGraphics(), "models\\suzanne.obj")
 {
   const DirectX::XMFLOAT3 material = {0.8f, 0.2f, 0.0f};
   m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics(), material));
@@ -43,6 +44,8 @@ void App::DoFrame()
     d->Update(dt);
     d->Draw(m_window.GetGraphics());
   }
+
+  m_suzanne.Draw(m_window.GetGraphics());
 
   m_window.GetGraphics().EndFrame();
 }

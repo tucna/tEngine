@@ -2,11 +2,14 @@
 
 #include "Common.h"
 
-class Bindable;
+namespace Bind
+{
+  class Bindable;
+}
 
 class Graphics
 {
-  friend class Bindable;
+  friend class Bind::Bindable;
 
 public:
   Graphics(HWND hWnd);

@@ -2,6 +2,8 @@
 
 #include "PixelShader.h"
 
+using namespace Bind;
+
 PixelShader::PixelShader(Graphics& gfx, const std::wstring& file)
 {
   Microsoft::WRL::ComPtr<ID3DBlob> blob;

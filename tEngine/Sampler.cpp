@@ -1,5 +1,7 @@
 #include "Sampler.h"
 
+using namespace Bind;
+
 Sampler::Sampler(Graphics& gfx)
 {
   D3D11_SAMPLER_DESC samplerDesc = {};

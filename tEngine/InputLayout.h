@@ -4,6 +4,9 @@
 
 #include "Bindable.h"
 
+namespace Bind
+{
+
 class InputLayout : public Bindable
 {
 public:
@@ -14,3 +17,5 @@ public:
 private:
   Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 };
+
+}

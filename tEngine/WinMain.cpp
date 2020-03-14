@@ -1,5 +1,3 @@
-#include <Windows.h>
-
 #include "App.h"
 
 int CALLBACK WinMain(

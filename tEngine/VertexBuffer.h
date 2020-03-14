@@ -3,6 +3,10 @@
 #include <vector>
 
 #include "Bindable.h"
+#include "Vertex.h"
+
+namespace Bind
+{
 
 class VertexBuffer : public Bindable
 {
@@ -25,9 +29,14 @@ public:
     CHECK_HR(GetDevice(gfx)->CreateBuffer(&bd, &sd, &m_vertexBuffer));
   }
 
+  VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf);
+
   void Bind(Graphics& gfx) noexcept override;
 
 private:
-  UINT m_stride;
   Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+
+  UINT m_stride;
 };
+
+}

@@ -6,6 +6,9 @@
 #include "ConstantBuffers.h"
 #include "Drawable.h"
 
+namespace Bind
+{
+
 class TransformConstantBuffer : public Bindable
 {
 public:
@@ -20,7 +23,9 @@ private:
     DirectX::XMMATRIX modelViewProj;
   };
 
-  static std::unique_ptr<VertexConstantBuffer<Transformations>> m_Vcbuf;
+  static std::unique_ptr<Bind::VertexConstantBuffer<Transformations>> m_Vcbuf;
 
   const Drawable& m_parent;
 };
+
+}

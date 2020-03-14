@@ -4,6 +4,9 @@
 
 #include "Bindable.h"
 
+namespace Bind
+{
+
 class IndexBuffer : public Bindable
 {
 public:
@@ -19,3 +22,4 @@ private:
   Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 };
 
+}

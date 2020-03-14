@@ -5,6 +5,9 @@
 #include "Bindable.h"
 #include "Graphics.h"
 
+namespace Bind
+{
+
 template<typename C>
 class ConstantBuffer : public Bindable
 {
@@ -86,3 +89,5 @@ public:
     GetContext(gfx)->PSSetConstantBuffers(m_slot, 1u, m_constantBuffer.GetAddressOf());
   }
 };
+
+}

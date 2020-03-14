@@ -4,6 +4,9 @@
 
 #include "Bindable.h"
 
+namespace Bind
+{
+
 class PixelShader : public Bindable
 {
 public:
@@ -15,3 +18,4 @@ protected:
   Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 };
 
+}

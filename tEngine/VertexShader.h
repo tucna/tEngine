@@ -6,6 +6,9 @@
 
 #include "Bindable.h"
 
+namespace Bind
+{
+
 class VertexShader : public Bindable
 {
 public:
@@ -19,3 +22,5 @@ private:
   Microsoft::WRL::ComPtr<ID3DBlob> m_blob;
   Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 };
+
+}
