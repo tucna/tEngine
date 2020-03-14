@@ -56,16 +56,17 @@ Graphics::Graphics(HWND hWnd)
   m_context->RSSetViewports(1u, &vp);
 }
 
-void Graphics::EndFrame()
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
-  m_swap->Present(1, 0);
-}
-
-void Graphics::Clear(float r, float g, float b) noexcept
-{
-  const float color[] = { r, g, b, 1 };
+  const float color[] = { red,green,blue,1.0f };
 
   m_context->ClearRenderTargetView(m_target.Get(), color);
+  //TODO m_context->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+}
+
+void Graphics::EndFrame()
+{
+  CHECK_HR(m_swap->Present(1, 0));
 }
 
 void Graphics::DrawIndexed(UINT count) noexcept

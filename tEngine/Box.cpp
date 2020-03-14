@@ -63,8 +63,7 @@ Box::Box(Graphics& gfx, DirectX::XMFLOAT3 material) :
   colorConst.color = material;
   AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
 
-
-  XMStoreFloat3x3(&m_model, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+  XMStoreFloat3x3(&m_model, XMMatrixScaling(5.0f, 5.0f, 5.0f));
 }
 
 void Box::Update(float dt) noexcept

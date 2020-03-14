@@ -33,7 +33,8 @@ void App::DoFrame()
 {
   const auto dt = m_timer.Mark() * 1;
 
-  m_window.GetGraphics().Clear(0, 0, 0);
+  m_window.GetGraphics().BeginFrame(0.07f, 0.0f, 0.12f);
+
   m_window.GetGraphics().SetCamera(m_camera.GetMatrix());
   m_light.Bind(m_window.GetGraphics());
 

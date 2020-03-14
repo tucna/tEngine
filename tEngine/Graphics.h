@@ -16,8 +16,9 @@ public:
 
   Graphics& operator=(const Graphics&) = delete;
 
+  void BeginFrame(float red, float green, float blue) noexcept;
   void EndFrame();
-  void Clear(float r, float g, float b) noexcept;
+
   void DrawIndexed(UINT count) noexcept;
 
   void SetProjection(DirectX::FXMMATRIX projection) noexcept { m_projection = projection; }

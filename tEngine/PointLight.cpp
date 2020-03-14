@@ -9,8 +9,8 @@ PointLight::PointLight(Graphics& gfx) :
 void PointLight::Reset() noexcept
 {
   m_cbData = {
-    { 0.0f,0.0f,0.0f },
-    { 0.05f,0.05f,0.05f },
+    { 0.0f,-9.0f,0.0f },
+    { 0.15f,0.15f,0.15f },
     { 1.0f,1.0f,1.0f },
     1.0f,
     1.0f,

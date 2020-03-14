@@ -1,7 +1,7 @@
 #include "Drawable.h"
 #include "IndexBuffer.h"
 
-void Drawable::Draw(Graphics & gfx) const noexcept
+void Drawable::Draw(Graphics& gfx) const noexcept
 {
   for (auto& b : m_binds)
     b->Bind(gfx);
