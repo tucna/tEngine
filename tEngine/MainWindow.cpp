@@ -33,7 +33,7 @@ MainWindow::MainWindow(uint16_t width, uint16_t height, std::string_view title) 
 
   ShowWindow(m_hWnd, SW_SHOW);
 
-  m_graphics = std::make_unique<Graphics>(m_hWnd);
+  m_graphics = std::make_unique<Graphics>(m_hWnd, width, height);
 }
 
 MainWindow::~MainWindow() noexcept
@@ -66,7 +66,7 @@ std::optional<int> MainWindow::ProcessMessages()
   while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
   {
     if (msg.message == WM_QUIT)
-      return msg.wParam;
+      return static_cast<int>(msg.wParam);
 
     TranslateMessage(&msg);
     DispatchMessage(&msg);

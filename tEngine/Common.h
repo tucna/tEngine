@@ -22,3 +22,6 @@
 // 0 disabled, 1 low, 2 high
 #define DEBUG_LEVEL 0
 
+// Constants
+constexpr uint16_t windowWidth = 1280;
+constexpr uint16_t windowHeight = 720;

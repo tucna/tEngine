@@ -187,11 +187,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
   bindablePtrs.push_back(std::make_unique<Bind::IndexBuffer>(gfx, indices));
 
-  auto pvs = std::make_unique<Bind::VertexShader>(gfx, L"PhongVS.cso");
+  auto pvs = std::make_unique<Bind::VertexShader>(gfx, L"Phong_VS.cso");
   auto pvsbc = pvs->GetBytecode();
   bindablePtrs.push_back(std::move(pvs));
 
-  bindablePtrs.push_back(std::make_unique<Bind::PixelShader>(gfx, L"PhongPS.cso"));
+  bindablePtrs.push_back(std::make_unique<Bind::PixelShader>(gfx, L"Phong_PS.cso"));
 
   bindablePtrs.push_back(std::make_unique<Bind::InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 

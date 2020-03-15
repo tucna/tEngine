@@ -12,7 +12,7 @@ class Graphics
   friend class Bind::Bindable;
 
 public:
-  Graphics(HWND hWnd);
+  Graphics(HWND hWnd, uint16_t width, uint16_t height);
   Graphics(const Graphics&) = delete;
 
   ~Graphics() {};

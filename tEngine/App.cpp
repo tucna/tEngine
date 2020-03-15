@@ -9,14 +9,14 @@
 using namespace DirectX;
 
 App::App() :
-  m_window(800, 600, "Basic window"),
+  m_window(windowWidth, windowHeight, "Basic window"),
   m_light(m_window.GetGraphics()),
   m_suzanne(m_window.GetGraphics(), "models\\suzanne.obj")
 {
-  const DirectX::XMFLOAT3 material = {0.8f, 0.2f, 0.0f};
-  m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics(), material));
+  //const DirectX::XMFLOAT3 material = {0.8f, 0.2f, 0.0f};
+  //m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics(), material));
 
-  m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 100.0f));
+  m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(1.0f, static_cast<float>(windowHeight) / static_cast<float>(windowWidth), 0.5f, 40.0f));
 }
 
 int App::Go()

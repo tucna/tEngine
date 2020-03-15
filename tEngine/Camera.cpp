@@ -2,22 +2,25 @@
 
 using namespace DirectX;
 
+Camera::Camera() noexcept
+{
+  Reset();
+}
+
 XMMATRIX Camera::GetMatrix() const noexcept
 {
-  const XMVECTOR pos = XMVector3Transform(
-    XMVectorSet(0.0f, 0.0f, -r, 0.0f),
-    XMMatrixRotationRollPitchYaw(phi, -theta, 0.0f)
-  );
+  const XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
-  return XMMatrixLookAtLH(pos, XMVectorZero(), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)) * XMMatrixRotationRollPitchYaw(pitch, -yaw, roll);
+  const auto lookVector = XMVector3Transform(forwardBaseVector, XMMatrixRotationRollPitchYaw(m_pitch, m_yaw, 0.0f));
+  const auto camPosition = XMLoadFloat3(&m_position);
+  const auto camTarget = camPosition + lookVector;
+
+  return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 }
 
 void Camera::Reset() noexcept
 {
-  r = 20.0f;
-  theta = 0.0f;
-  phi = 0.0f;
-  pitch = 0.0f;
-  yaw = 0.0f;
-  roll = 0.0f;
+  m_position = {0.0f,0.0f,-3.0f};
+  m_pitch = 0.0f;
+  m_yaw = 0.0f;
 }

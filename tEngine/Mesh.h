@@ -23,6 +23,7 @@ private:
 class Node
 {
   friend class Model;
+
 public:
   Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept;
   void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;

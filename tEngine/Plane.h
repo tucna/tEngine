@@ -43,7 +43,7 @@ public:
 
     std::vector<uint16_t> indices;
 
-    indices.reserve(std::pow((divisions_x * divisions_y), 2) * 6);
+    indices.reserve(static_cast<size_t>(std::pow((divisions_x * divisions_y), 2) * 6));
     {
       const auto vxy2i = [nVertices_x](size_t x, size_t y)
       {

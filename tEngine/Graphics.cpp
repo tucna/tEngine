@@ -1,10 +1,10 @@
 #include "Graphics.h"
 
-Graphics::Graphics(HWND hWnd)
+Graphics::Graphics(HWND hWnd, uint16_t width, uint16_t height)
 {
   DXGI_SWAP_CHAIN_DESC sd = {};
-  sd.BufferDesc.Width = 0;
-  sd.BufferDesc.Height = 0;
+  sd.BufferDesc.Width = width;
+  sd.BufferDesc.Height = height;
   sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
   sd.BufferDesc.RefreshRate.Numerator = 0;
   sd.BufferDesc.RefreshRate.Denominator = 0;
@@ -46,8 +46,8 @@ Graphics::Graphics(HWND hWnd)
   m_context->OMSetRenderTargets(1u, m_target.GetAddressOf(), nullptr);
 
   D3D11_VIEWPORT vp;
-  vp.Width = 800.0f;
-  vp.Height = 600.0f;
+  vp.Width = static_cast<float>(width);
+  vp.Height = static_cast<float>(height);
   vp.MinDepth = 0.0f;
   vp.MaxDepth = 1.0f;
   vp.TopLeftX = 0.0f;
