@@ -35,6 +35,7 @@ private:
   Microsoft::WRL::ComPtr<IDXGISwapChain> m_swap;
   Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_context;
   Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_target;
+  Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DSV;
 
   DirectX::XMMATRIX m_projection;
   DirectX::XMMATRIX m_camera;
