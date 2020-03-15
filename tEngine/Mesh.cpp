@@ -13,13 +13,42 @@
 
 using namespace DirectX;
 
-// Mesh
+class ModelWindow
+{
+public:
+  XMMATRIX GetTransform() const noexcept
+  {
+    assert(m_selectedNode != nullptr);
+
+    const auto& transform = m_transforms.at(m_selectedNode->GetId());
+
+    return
+      XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
+      XMMatrixTranslation(transform.x, transform.y, transform.z);
+  }
+
+  Node* GetSelectedNode() const noexcept { return m_selectedNode; }
+
+private:
+  struct TransformParameters
+  {
+    float roll = 0.0f;
+    float pitch = 0.0f;
+    float yaw = 0.0f;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+  };
+
+  Node* m_selectedNode;
+
+  std::unordered_map<int, TransformParameters> m_transforms;
+};
+
 Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs)
 {
   if (!IsStaticInitialized())
-  {
     AddStaticBind(std::make_unique<Bind::Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-  }
 
   for (auto& pb : bindPtrs)
   {
@@ -36,97 +65,48 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs)
 
   AddBind(std::make_unique<Bind::TransformConstantBuffer>(gfx, *this));
 }
+
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept
 {
-  DirectX::XMStoreFloat4x4(&transform, accumulatedTransform);
+  DirectX::XMStoreFloat4x4(&m_transform, accumulatedTransform);
   Drawable::Draw(gfx);
 }
-DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
-{
-  return DirectX::XMLoadFloat4x4(&transform);
-}
 
-
-// Node
-Node::Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noexcept
-  :
-  id(id),
-  meshPtrs(std::move(meshPtrs)),
-  name(name)
+Node::Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept :
+  m_id(id),
+  m_meshPtrs(std::move(meshPtrs)),
+  m_name(name)
 {
-  XMStoreFloat4x4(&transform, transform_in);
-  XMStoreFloat4x4(&appliedTransform, XMMatrixIdentity());
+  XMStoreFloat4x4(&m_transform, transform);
+  XMStoreFloat4x4(&m_appliedTransform, XMMatrixIdentity());
 }
 
 void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept
 {
   const auto built =
-    XMLoadFloat4x4(&appliedTransform) *
-    XMLoadFloat4x4(&transform) *
+    XMLoadFloat4x4(&m_appliedTransform) *
+    XMLoadFloat4x4(&m_transform) *
     accumulatedTransform;
-  for (const auto pm : meshPtrs)
-  {
+
+  for (const auto pm : m_meshPtrs)
     pm->Draw(gfx, built);
-  }
-  for (const auto& pc : childPtrs)
-  {
+
+  for (const auto& pc : m_childPtrs)
     pc->Draw(gfx, built);
-  }
 }
 
-void Node::AddChild(std::unique_ptr<Node> pChild) noexcept
+void Node::AddChild(std::unique_ptr<Node> child) noexcept
 {
-  assert(pChild);
-  childPtrs.push_back(std::move(pChild));
+  assert(child);
+
+  m_childPtrs.push_back(std::move(child));
 }
 
-void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
-{
-  XMStoreFloat4x4(&appliedTransform, transform);
-}
-
-int Node::GetId() const noexcept
-{
-  return id;
-}
-
-
-// Model
-class ModelWindow // pImpl idiom, only defined in this .cpp
-{
-public:
-  XMMATRIX GetTransform() const noexcept
-  {
-    assert(pSelectedNode != nullptr);
-    const auto& transform = transforms.at(pSelectedNode->GetId());
-    return
-      XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-      XMMatrixTranslation(transform.x, transform.y, transform.z);
-  }
-  Node* GetSelectedNode() const noexcept
-  {
-    return pSelectedNode;
-  }
-private:
-  Node* pSelectedNode;
-  struct TransformParameters
-  {
-    float roll = 0.0f;
-    float pitch = 0.0f;
-    float yaw = 0.0f;
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-  };
-  std::unordered_map<int, TransformParameters> transforms;
-};
-
-Model::Model(Graphics& gfx, const std::string fileName)
-  :
-  pWindow(std::make_unique<ModelWindow>())
+Model::Model(Graphics& gfx, std::string_view fileName) :
+  m_window(std::make_unique<ModelWindow>())
 {
   Assimp::Importer imp;
-  const auto pScene = imp.ReadFile(fileName.c_str(),
+  const auto pScene = imp.ReadFile(fileName.data(),
     aiProcess_Triangulate |
     aiProcess_JoinIdenticalVertices |
     aiProcess_ConvertToLeftHanded |
@@ -134,32 +114,30 @@ Model::Model(Graphics& gfx, const std::string fileName)
   );
 
   for (size_t i = 0; i < pScene->mNumMeshes; i++)
-    meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
+    m_meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
 
   int nextId = 0;
-  pRoot = ParseNode(nextId, *pScene->mRootNode);
+  m_root = ParseNode(nextId, *pScene->mRootNode);
+}
+
+Model::~Model()
+{
 }
 
 void Model::Draw(Graphics& gfx) const noexcept
 {
-  if (auto node = pWindow->GetSelectedNode())
-  {
-    node->SetAppliedTransform(pWindow->GetTransform());
-  }
-  pRoot->Draw(gfx, XMMatrixIdentity());
-}
+  if (auto node = m_window->GetSelectedNode())
+    node->SetAppliedTransform(m_window->GetTransform());
 
-Model::~Model() noexcept
-{}
+  m_root->Draw(gfx, XMMatrixIdentity());
+}
 
 std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 {
-  using Dvtx::VertexLayout;
-
   Dvtx::VertexBuffer vbuf(std::move(
-    VertexLayout{}
-    .Append(VertexLayout::Position3D)
-    .Append(VertexLayout::Normal)
+    Dvtx::VertexLayout{}
+    .Append(Dvtx::VertexLayout::Position3D)
+    .Append(Dvtx::VertexLayout::Normal)
   ));
 
   for (unsigned int i = 0; i < mesh.mNumVertices; i++)
@@ -172,10 +150,12 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
   std::vector<unsigned short> indices;
   indices.reserve(mesh.mNumFaces * 3);
+
   for (unsigned int i = 0; i < mesh.mNumFaces; i++)
   {
     const auto& face = mesh.mFaces[i];
     assert(face.mNumIndices == 3);
+
     indices.push_back(face.mIndices[0]);
     indices.push_back(face.mIndices[1]);
     indices.push_back(face.mIndices[2]);
@@ -209,24 +189,20 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
 std::unique_ptr<Node> Model::ParseNode(int& nextId, const aiNode& node) noexcept
 {
-  namespace dx = DirectX;
-  const auto transform = XMMatrixTranspose(XMLoadFloat4x4(
-    reinterpret_cast<const XMFLOAT4X4*>(&node.mTransformation)
-  ));
+  const auto transform = XMMatrixTranspose(XMLoadFloat4x4(reinterpret_cast<const XMFLOAT4X4*>(&node.mTransformation)));
 
   std::vector<Mesh*> curMeshPtrs;
   curMeshPtrs.reserve(node.mNumMeshes);
+
   for (size_t i = 0; i < node.mNumMeshes; i++)
   {
     const auto meshIdx = node.mMeshes[i];
-    curMeshPtrs.push_back(meshPtrs.at(meshIdx).get());
+    curMeshPtrs.push_back(m_meshPtrs.at(meshIdx).get());
   }
 
   auto pNode = std::make_unique<Node>(nextId++, node.mName.C_Str(), std::move(curMeshPtrs), transform);
   for (size_t i = 0; i < node.mNumChildren; i++)
-  {
     pNode->AddChild(ParseNode(nextId, *node.mChildren[i]));
-  }
 
   return pNode;
 }
