@@ -39,13 +39,75 @@ void App::DoFrame()
   m_window.GetGraphics().SetCamera(m_camera.GetMatrix());
   m_light.Bind(m_window.GetGraphics());
 
+  /* TUCNA
   for (auto& d : m_drawables)
   {
     d->Update(dt);
     d->Draw(m_window.GetGraphics());
   }
+  */
 
   m_suzanne.Draw(m_window.GetGraphics());
+
+  while (const auto e = m_window.m_keyboard.ReadKey())
+  {
+    if (!e->IsPress())
+    {
+      continue;
+    }
+
+    switch (e->GetCode())
+    {
+    case VK_ESCAPE:
+      if (m_window.CursorEnabled())
+      {
+        m_window.DisableCursor();
+        m_window.m_mouse.EnableRaw();
+      }
+      else
+      {
+        m_window.EnableCursor();
+        m_window.m_mouse.DisableRaw();
+      }
+      break;
+    }
+  }
+
+  if (!m_window.CursorEnabled())
+  {
+    if (m_window.m_keyboard.KeyIsPressed('W'))
+    {
+      m_camera.Translate({ 0.0f,0.0f,dt });
+    }
+    if (m_window.m_keyboard.KeyIsPressed('A'))
+    {
+      m_camera.Translate({ -dt,0.0f,0.0f });
+    }
+    if (m_window.m_keyboard.KeyIsPressed('S'))
+    {
+      m_camera.Translate({ 0.0f,0.0f,-dt });
+    }
+    if (m_window.m_keyboard.KeyIsPressed('D'))
+    {
+      m_camera.Translate({ dt,0.0f,0.0f });
+    }
+    if (m_window.m_keyboard.KeyIsPressed('R'))
+    {
+      m_camera.Translate({ 0.0f,dt,0.0f });
+    }
+    if (m_window.m_keyboard.KeyIsPressed('F'))
+    {
+      m_camera.Translate({ 0.0f,-dt,0.0f });
+    }
+  }
+
+  while (const auto delta = m_window.m_mouse.ReadRawDelta())
+  {
+    if (!m_window.CursorEnabled())
+    {
+      m_camera.Rotate((float)delta->x, (float)delta->y);
+    }
+  }
 
   m_window.GetGraphics().EndFrame();
 }
