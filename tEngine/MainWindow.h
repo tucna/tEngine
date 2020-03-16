@@ -31,8 +31,8 @@ public:
 
   Graphics& GetGraphics() { return *m_graphics; }
 
-  Mouse m_mouse;
-  Keyboard m_keyboard;
+  Keyboard& GetKeyboard() { return m_keyboard; }
+  Mouse& GetMouse() { return m_mouse; }
 
 private:
   class WindowClass
@@ -67,5 +67,8 @@ private:
 
   uint16_t m_width;
   uint16_t m_height;
+
+  Mouse m_mouse;
+  Keyboard m_keyboard;
 };
 

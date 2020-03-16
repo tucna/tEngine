@@ -11,10 +11,12 @@ using namespace DirectX;
 App::App() :
   m_window(windowWidth, windowHeight, "Basic window"),
   m_light(m_window.GetGraphics()),
-  m_suzanne(m_window.GetGraphics(), "models\\suzanne.obj")
+  m_suzanne(m_window.GetGraphics(), "models\\suzanne.obj"),
+  m_keyboard(m_window.GetKeyboard()),
+  m_mouse(m_window.GetMouse())
 {
-  //const DirectX::XMFLOAT3 material = {0.8f, 0.2f, 0.0f};
-  //m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics(), material));
+  const DirectX::XMFLOAT3 material = {0.8f, 0.2f, 0.0f};
+  m_drawables.push_back(std::make_unique<Box>(m_window.GetGraphics(), material));
 
   m_window.GetGraphics().SetProjection(XMMatrixPerspectiveLH(1.0f, static_cast<float>(windowHeight) / static_cast<float>(windowWidth), 0.5f, 40.0f));
 }
@@ -39,22 +41,18 @@ void App::DoFrame()
   m_window.GetGraphics().SetCamera(m_camera.GetMatrix());
   m_light.Bind(m_window.GetGraphics());
 
-  /* TUCNA
   for (auto& d : m_drawables)
   {
     d->Update(dt);
     d->Draw(m_window.GetGraphics());
   }
-  */
 
   m_suzanne.Draw(m_window.GetGraphics());
 
-  while (const auto e = m_window.m_keyboard.ReadKey())
+  while (const auto e = m_window.GetKeyboard().ReadKey())
   {
     if (!e->IsPress())
-    {
       continue;
-    }
 
     switch (e->GetCode())
     {
@@ -62,12 +60,12 @@ void App::DoFrame()
       if (m_window.CursorEnabled())
       {
         m_window.DisableCursor();
-        m_window.m_mouse.EnableRaw();
+        m_mouse.EnableRaw();
       }
       else
       {
         m_window.EnableCursor();
-        m_window.m_mouse.DisableRaw();
+        m_mouse.DisableRaw();
       }
       break;
     }
@@ -75,38 +73,29 @@ void App::DoFrame()
 
   if (!m_window.CursorEnabled())
   {
-    if (m_window.m_keyboard.KeyIsPressed('W'))
-    {
+    if (m_keyboard.IsKeyPressed('W'))
       m_camera.Translate({ 0.0f,0.0f,dt });
-    }
-    if (m_window.m_keyboard.KeyIsPressed('A'))
-    {
+
+    if (m_keyboard.IsKeyPressed('A'))
       m_camera.Translate({ -dt,0.0f,0.0f });
-    }
-    if (m_window.m_keyboard.KeyIsPressed('S'))
-    {
+
+    if (m_keyboard.IsKeyPressed('S'))
       m_camera.Translate({ 0.0f,0.0f,-dt });
-    }
-    if (m_window.m_keyboard.KeyIsPressed('D'))
-    {
+
+    if (m_keyboard.IsKeyPressed('D'))
       m_camera.Translate({ dt,0.0f,0.0f });
-    }
-    if (m_window.m_keyboard.KeyIsPressed('R'))
-    {
+
+    if (m_keyboard.IsKeyPressed('R'))
       m_camera.Translate({ 0.0f,dt,0.0f });
-    }
-    if (m_window.m_keyboard.KeyIsPressed('F'))
-    {
+
+    if (m_keyboard.IsKeyPressed('F'))
       m_camera.Translate({ 0.0f,-dt,0.0f });
-    }
   }
 
-  while (const auto delta = m_window.m_mouse.ReadRawDelta())
+  while (const auto delta = m_mouse.ReadRawDelta())
   {
     if (!m_window.CursorEnabled())
-    {
       m_camera.Rotate((float)delta->x, (float)delta->y);
-    }
   }
 
   m_window.GetGraphics().EndFrame();

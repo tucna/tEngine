@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Common.h"
+
 #include <unordered_map>
 #include <string>
-
-#include <Windows.h>
 
 class WindowsMessageMap
 {

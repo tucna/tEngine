@@ -264,10 +264,9 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
   /************** RAW MOUSE MESSAGES **************/
   case WM_INPUT:
   {
-    if (!m_mouse.RawEnabled())
-    {
+    if (!m_mouse.IsRawEnabled())
       break;
-    }
+
     UINT size;
     // first get the size of the input data
     if (GetRawInputData(
