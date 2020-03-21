@@ -14,6 +14,8 @@ namespace Dvtx
       Position3D,
       Texture2D,
       Normal,
+      Tangent,
+      Bitangent,
       Float3Color,
       Float4Color,
       Count,
@@ -24,36 +26,56 @@ namespace Dvtx
       using SysType = DirectX::XMFLOAT2;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
       static constexpr const char* semantic = "Position";
+      static constexpr const char* code = "P2";
     };
     template<> struct Map<Position3D>
     {
       using SysType = DirectX::XMFLOAT3;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
       static constexpr const char* semantic = "Position";
+      static constexpr const char* code = "P3";
     };
     template<> struct Map<Texture2D>
     {
       using SysType = DirectX::XMFLOAT2;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
       static constexpr const char* semantic = "Texcoord";
+      static constexpr const char* code = "T2";
     };
     template<> struct Map<Normal>
     {
       using SysType = DirectX::XMFLOAT3;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
       static constexpr const char* semantic = "Normal";
+      static constexpr const char* code = "N";
+    };
+    template<> struct Map<Tangent>
+    {
+      using SysType = DirectX::XMFLOAT3;
+      static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+      static constexpr const char* semantic = "Tangent";
+      static constexpr const char* code = "Nt";
+    };
+    template<> struct Map<Bitangent>
+    {
+      using SysType = DirectX::XMFLOAT3;
+      static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+      static constexpr const char* semantic = "Bitangent";
+      static constexpr const char* code = "Nb";
     };
     template<> struct Map<Float3Color>
     {
       using SysType = DirectX::XMFLOAT3;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32_FLOAT;
       static constexpr const char* semantic = "Color";
+      static constexpr const char* code = "C3";
     };
     template<> struct Map<Float4Color>
     {
       using SysType = DirectX::XMFLOAT4;
       static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
       static constexpr const char* semantic = "Color";
+      static constexpr const char* code = "C4";
     };
 
     class Element
@@ -66,6 +88,7 @@ namespace Dvtx
       static constexpr size_t SizeOf(ElementType type) noexcept;
       ElementType GetType() const noexcept;
       D3D11_INPUT_ELEMENT_DESC GetDesc() const noexcept;
+      const char* GetCode() const noexcept;
     private:
       template<ElementType type>
       static constexpr D3D11_INPUT_ELEMENT_DESC GenerateDesc(size_t offset) noexcept
@@ -95,6 +118,8 @@ namespace Dvtx
     size_t Size() const noexcept;
     size_t GetElementCount() const noexcept;
     std::vector<D3D11_INPUT_ELEMENT_DESC> GetD3DLayout() const noexcept;
+    std::string GetCode() const noexcept;
+
   private:
     std::vector<Element> elements;
   };
@@ -127,6 +152,12 @@ namespace Dvtx
         break;
       case VertexLayout::Normal:
         SetAttribute<VertexLayout::Normal>(pAttribute, std::forward<T>(val));
+        break;
+      case VertexLayout::Tangent:
+        SetAttribute<VertexLayout::Tangent>(pAttribute, std::forward<T>(val));
+        break;
+      case VertexLayout::Bitangent:
+        SetAttribute<VertexLayout::Bitangent>(pAttribute, std::forward<T>(val));
         break;
       case VertexLayout::Float3Color:
         SetAttribute<VertexLayout::Float3Color>(pAttribute, std::forward<T>(val));

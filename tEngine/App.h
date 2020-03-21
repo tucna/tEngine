@@ -29,7 +29,8 @@ private:
   Keyboard& m_keyboard;
   Mouse& m_mouse;
 
-  Model m_suzanne;
+  //Model m_suzanne;
+  Model m_goblin;
 
   std::vector<std::unique_ptr<class Drawable>> m_drawables;
 };

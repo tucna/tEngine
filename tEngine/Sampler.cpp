@@ -1,8 +1,7 @@
+#include "Codex.h"
 #include "Sampler.h"
 
-using namespace Bind;
-
-Sampler::Sampler(Graphics& gfx)
+Bind::Sampler::Sampler(Graphics& gfx)
 {
   D3D11_SAMPLER_DESC samplerDesc = {};
   samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -13,7 +12,17 @@ Sampler::Sampler(Graphics& gfx)
   CHECK_HR(GetDevice(gfx)->CreateSamplerState(&samplerDesc, &m_sampler));
 }
 
-void Sampler::Bind(Graphics & gfx) noexcept
+void Bind::Sampler::Bind(Graphics & gfx) noexcept
 {
   GetContext(gfx)->PSSetSamplers(0, 1, m_sampler.GetAddressOf());
+}
+
+std::shared_ptr<Bind::Sampler> Bind::Sampler::Resolve(Graphics & gfx)
+{
+  return Codex::Resolve<Sampler>(gfx);
+}
+
+std::string Bind::Sampler::GenerateUID()
+{
+  return typeid(Sampler).name();
 }

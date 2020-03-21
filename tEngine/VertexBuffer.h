@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 #include <vector>
 
 #include "Bindable.h"
@@ -11,32 +13,24 @@ namespace Bind
 class VertexBuffer : public Bindable
 {
 public:
-  template<class V>
-  VertexBuffer(Graphics& gfx, const std::vector<V>& vertices) :
-    m_stride(sizeof(V))
-  {
-    D3D11_BUFFER_DESC bd = {};
-    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.CPUAccessFlags = 0u;
-    bd.MiscFlags = 0u;
-    bd.ByteWidth = UINT(sizeof(V) * vertices.size());
-    bd.StructureByteStride = sizeof(V);
-
-    D3D11_SUBRESOURCE_DATA sd = {};
-    sd.pSysMem = vertices.data();
-
-    CHECK_HR(GetDevice(gfx)->CreateBuffer(&bd, &sd, &m_vertexBuffer));
-  }
-
+  VertexBuffer(Graphics& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf);
   VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf);
 
   void Bind(Graphics& gfx) noexcept override;
+  std::string GetUID() const noexcept override;
+
+  static std::shared_ptr<VertexBuffer> Resolve(Graphics& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf);
+
+  template<typename...Ignore>
+  static std::string GenerateUID(const std::string& tag, Ignore&&...ignore) { return GenerateUID_(tag); }
 
 private:
-  Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+  static std::string GenerateUID_(const std::string& tag);
 
+  std::string m_tag;
   UINT m_stride;
+
+  Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
 };
 
 }

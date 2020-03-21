@@ -31,6 +31,16 @@ namespace Dvtx
     return desc;
   }
 
+  std::string VertexLayout::GetCode() const noexcept
+  {
+    std::string code;
+    for (const auto& e : elements)
+    {
+      code += e.GetCode();
+    }
+    return code;
+  }
+
 
   // VertexLayout::Element
   VertexLayout::Element::Element(ElementType type, size_t offset)
@@ -62,6 +72,10 @@ namespace Dvtx
       return sizeof(Map<Texture2D>::SysType);
     case Normal:
       return sizeof(Map<Normal>::SysType);
+    case Tangent:
+      return sizeof(Map<Tangent>::SysType);
+    case Bitangent:
+      return sizeof(Map<Bitangent>::SysType);
     case Float3Color:
       return sizeof(Map<Float3Color>::SysType);
     case Float4Color:
@@ -73,6 +87,30 @@ namespace Dvtx
   VertexLayout::ElementType VertexLayout::Element::GetType() const noexcept
   {
     return type;
+  }
+  const char* VertexLayout::Element::GetCode() const noexcept
+  {
+    switch (type)
+    {
+    case Position2D:
+      return Map<Position2D>::code;
+    case Position3D:
+      return Map<Position3D>::code;
+    case Texture2D:
+      return Map<Texture2D>::code;
+    case Normal:
+      return Map<Normal>::code;
+    case Tangent:
+      return Map<Tangent>::code;
+    case Bitangent:
+      return Map<Bitangent>::code;
+    case Float3Color:
+      return Map<Float3Color>::code;
+    case Float4Color:
+      return Map<Float4Color>::code;
+    }
+    assert("Invalid element type" && false);
+    return "Invalid";
   }
   D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept
   {
@@ -86,6 +124,10 @@ namespace Dvtx
       return GenerateDesc<Texture2D>(GetOffset());
     case Normal:
       return GenerateDesc<Normal>(GetOffset());
+    case Tangent:
+      return GenerateDesc<Tangent>(GetOffset());
+    case Bitangent:
+      return GenerateDesc<Bitangent>(GetOffset());
     case Float3Color:
       return GenerateDesc<Float3Color>(GetOffset());
     case Float4Color:
@@ -99,21 +141,21 @@ namespace Dvtx
   // Vertex
   Vertex::Vertex(char* pData, const VertexLayout& layout) noexcept
     :
-  pData(pData),
+    pData(pData),
     layout(layout)
   {
     assert(pData != nullptr);
   }
   ConstVertex::ConstVertex(const Vertex& v) noexcept
     :
-  vertex(v)
+    vertex(v)
   {}
 
 
   // VertexBuffer
   VertexBuffer::VertexBuffer(VertexLayout layout) noexcept
     :
-  layout(std::move(layout))
+    layout(std::move(layout))
   {}
   const char* VertexBuffer::GetData() const noexcept
   {

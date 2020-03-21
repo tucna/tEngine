@@ -16,6 +16,8 @@ public:
 
   void Bind(Graphics& gfx) noexcept override;
 
+  std::string GetUID() const noexcept override { return ""; /*TODO*/ }
+
 private:
   struct Transformations
   {

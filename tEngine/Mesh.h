@@ -6,14 +6,18 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <filesystem>
+#include <memory>
+#include <vector>
+
 #include "Bindable.h"
-#include "DrawableBase.h"
+#include "Drawable.h"
 #include "Vertex.h"
 
-class Mesh : public DrawableBase<Mesh>
+class Mesh : public Drawable
 {
 public:
-  Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs);
+  Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs);
 
   void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
 
@@ -28,6 +32,24 @@ class Node
   friend class Model;
 
 public:
+  struct PSMaterialConstantFullmonte
+  {
+    BOOL  normalMapEnabled = TRUE;
+    BOOL  specularMapEnabled = TRUE;
+    BOOL  hasGlossMap = FALSE;
+    float specularPower = 3.1f;
+    DirectX::XMFLOAT3 specularColor = { 0.75f,0.75f,0.75f };
+    float specularMapWeight = 0.671f;
+  };
+
+  struct PSMaterialConstantNotex
+  {
+    DirectX::XMFLOAT4 materialColor = { 0.447970f,0.327254f,0.176283f,1.0f };
+    DirectX::XMFLOAT4 specularColor = { 0.65f,0.65f,0.65f,1.0f };
+    float specularPower = 120.0f;
+    float padding[3];
+  };
+
   Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept;
 
   void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
@@ -53,14 +75,14 @@ private:
 class Model
 {
 public:
-  Model(Graphics& gfx, std::string_view fileName);
+  Model(Graphics& gfx, std::string_view fileName, float scale);
 
   ~Model() noexcept;
 
   void Draw(Graphics& gfx) const noexcept;
 
 private:
-  static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh);
+  static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale);
 
   std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node) noexcept;
 
