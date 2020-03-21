@@ -34,8 +34,6 @@ constexpr uint16_t windowHeight = 720;
 
 namespace Utils
 {
-  inline std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> strconverter;
-
-  inline std::string To_string(std::wstring wstr) { return strconverter.to_bytes(wstr); }
-  inline std::wstring To_wstring(std::string str) { return strconverter.from_bytes(str); }
+  inline std::string To_string(std::wstring wstr) { std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> strconverter; return strconverter.to_bytes(wstr); }
+  inline std::wstring To_wstring(std::string str) { std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> strconverter; return strconverter.from_bytes(str); }
 }

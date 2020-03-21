@@ -30,7 +30,6 @@ namespace Dvtx
     }
     return desc;
   }
-
   std::string VertexLayout::GetCode() const noexcept
   {
     std::string code;
@@ -88,7 +87,7 @@ namespace Dvtx
   {
     return type;
   }
-  const char* VertexLayout::Element::GetCode() const noexcept
+  const char* Dvtx::VertexLayout::Element::GetCode() const noexcept
   {
     switch (type)
     {
@@ -141,22 +140,32 @@ namespace Dvtx
   // Vertex
   Vertex::Vertex(char* pData, const VertexLayout& layout) noexcept
     :
-    pData(pData),
+  pData(pData),
     layout(layout)
   {
     assert(pData != nullptr);
   }
   ConstVertex::ConstVertex(const Vertex& v) noexcept
     :
-    vertex(v)
+  vertex(v)
   {}
 
 
   // VertexBuffer
-  VertexBuffer::VertexBuffer(VertexLayout layout) noexcept
+  VertexBuffer::VertexBuffer(VertexLayout layout, size_t size) noexcept
     :
-    layout(std::move(layout))
-  {}
+  layout(std::move(layout))
+  {
+    Resize(size);
+  }
+  void VertexBuffer::Resize(size_t newSize) noexcept
+  {
+    const auto size = Size();
+    if (size < newSize)
+    {
+      buffer.resize(buffer.size() + layout.Size() * (newSize - size));
+    }
+  }
   const char* VertexBuffer::GetData() const noexcept
   {
     return buffer.data();

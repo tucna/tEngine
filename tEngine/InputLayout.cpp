@@ -4,7 +4,7 @@
 Bind::InputLayout::InputLayout(Graphics& gfx, Dvtx::VertexLayout layout, ID3DBlob* pVertexShaderBytecode) :
   m_layout(std::move(layout))
 {
-  const auto d3dLayout = layout.GetD3DLayout();
+  const auto d3dLayout = m_layout.GetD3DLayout();
 
   CHECK_HR(GetDevice(gfx)->CreateInputLayout(
     d3dLayout.data(), (UINT)d3dLayout.size(),

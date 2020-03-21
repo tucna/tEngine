@@ -195,5 +195,7 @@
     </FxCompile>
     <FxCompile Include="PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="PhongVSNormalMap.hlsl" />
+    <FxCompile Include="PhongPSNotex.hlsl" />
+    <FxCompile Include="PhongVSNotex.hlsl" />
   </ItemGroup>
 </Project>

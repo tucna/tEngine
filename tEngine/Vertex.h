@@ -1,6 +1,10 @@
 #pragma once
+
+#include "Common.h"
+
 #include <vector>
 #include <type_traits>
+
 #include "Graphics.h"
 
 namespace Dvtx
@@ -119,7 +123,6 @@ namespace Dvtx
     size_t GetElementCount() const noexcept;
     std::vector<D3D11_INPUT_ELEMENT_DESC> GetD3DLayout() const noexcept;
     std::string GetCode() const noexcept;
-
   private:
     std::vector<Element> elements;
   };
@@ -214,9 +217,10 @@ namespace Dvtx
   class VertexBuffer
   {
   public:
-    VertexBuffer(VertexLayout layout) noexcept;
+    VertexBuffer(VertexLayout layout, size_t size = 0u) noexcept;
     const char* GetData() const noexcept;
     const VertexLayout& GetLayout() const noexcept;
+    void Resize(size_t newSize) noexcept;
     size_t Size() const noexcept;
     size_t SizeBytes() const noexcept;
     template<typename ...Params>
@@ -232,7 +236,6 @@ namespace Dvtx
     ConstVertex Back() const noexcept;
     ConstVertex Front() const noexcept;
     ConstVertex operator[](size_t i) const noexcept;
-
   private:
     std::vector<char> buffer;
     VertexLayout layout;
