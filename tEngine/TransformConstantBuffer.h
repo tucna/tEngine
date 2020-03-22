@@ -25,6 +25,9 @@ private:
     DirectX::XMMATRIX modelViewProj;
   };
 
+  void UpdateBindImpl(Graphics& gfx, const Transformations& tf) noexcept;
+  Transformations GetTransforms(Graphics& gfx) noexcept;
+
   static std::unique_ptr<Bind::VertexConstantBuffer<Transformations>> m_Vcbuf;
 
   const Drawable& m_parent;

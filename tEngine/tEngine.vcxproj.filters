@@ -90,6 +90,9 @@
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SolidSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -179,6 +182,12 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Phong_PS.hlsl">
@@ -197,5 +206,7 @@
     <FxCompile Include="PhongVSNormalMap.hlsl" />
     <FxCompile Include="PhongPSNotex.hlsl" />
     <FxCompile Include="PhongVSNotex.hlsl" />
+    <FxCompile Include="SolidPS.hlsl" />
+    <FxCompile Include="SolidVS.hlsl" />
   </ItemGroup>
 </Project>

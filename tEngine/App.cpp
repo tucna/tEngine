@@ -38,7 +38,7 @@ void App::DoFrame()
   m_window.GetGraphics().BeginFrame(0.07f, 0.0f, 0.12f);
 
   m_window.GetGraphics().SetCamera(m_camera.GetMatrix());
-  m_light.Bind(m_window.GetGraphics());
+  m_light.Bind(m_window.GetGraphics(), m_camera.GetMatrix());
 
   /*
   for (auto& d : m_drawables)
@@ -50,6 +50,7 @@ void App::DoFrame()
 
   //m_suzanne.Draw(m_window.GetGraphics());
   m_goblin.Draw(m_window.GetGraphics());
+  m_light.Draw(m_window.GetGraphics());
 
   while (const auto e = m_window.GetKeyboard().ReadKey())
   {
@@ -93,6 +94,25 @@ void App::DoFrame()
     if (m_keyboard.IsKeyPressed('F'))
       m_camera.Translate({ 0.0f,-dt,0.0f });
   }
+
+  // Light
+  if (m_keyboard.IsKeyPressed(102)) // 6
+    m_light.Translate({ dt * 4,0.0f,0.0f });
+
+  if (m_keyboard.IsKeyPressed(100)) // 4
+    m_light.Translate({ -dt * 4,0.0f,0.0f });
+
+  if (m_keyboard.IsKeyPressed(104)) // 8
+    m_light.Translate({ 0.0f,0.0f,dt * 4 });
+
+  if (m_keyboard.IsKeyPressed(101)) // 5
+    m_light.Translate({ 0.0f,0.0f,-dt * 4 });
+
+  if (m_keyboard.IsKeyPressed(105))
+    m_light.Translate({ 0.0f,dt * 4,0.0f });
+
+  if (m_keyboard.IsKeyPressed(103))
+    m_light.Translate({ 0.0f,-dt * 4,0.0f });
 
   while (const auto delta = m_mouse.ReadRawDelta())
   {

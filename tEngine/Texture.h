@@ -13,7 +13,7 @@ namespace Bind
 class Texture : public Bindable
 {
 public:
-  Texture(Graphics& gfx, std::string_view path, bool mipmaps, UINT slot = 0);
+  Texture(Graphics& gfx, std::string_view path, UINT slot = 0);
 
   void Bind(Graphics& gfx) noexcept override;
 

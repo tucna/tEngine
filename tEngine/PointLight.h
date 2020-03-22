@@ -4,14 +4,19 @@
 
 #include "ConstantBuffers.h"
 #include "Graphics.h"
+#include "SolidSphere.h"
 
 class PointLight
 {
 public:
-  PointLight(Graphics& gfx);
+  PointLight(Graphics& gfx, float radius = 0.5f);
 
   void Reset() noexcept;
-  void Bind(Graphics& gfx) const noexcept;
+
+  void Draw(Graphics& gfx) const noexcept;
+  void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
+
+  void Translate(DirectX::XMFLOAT3 translation) noexcept;
 
 private:
   struct PointLightCBuf
@@ -28,6 +33,7 @@ private:
 
   PointLightCBuf m_cbData;
 
+  mutable SolidSphere m_mesh;
   mutable Bind::PixelConstantBuffer<PointLightCBuf> m_cbuf;
 };
 

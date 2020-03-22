@@ -78,20 +78,24 @@ public:
   {
     return Codex::Resolve<VertexConstantBuffer>(gfx, consts, slot);
   }
+
   static std::shared_ptr<VertexConstantBuffer> Resolve(Graphics& gfx, UINT slot = 0)
   {
     return Codex::Resolve<VertexConstantBuffer>(gfx, slot);
   }
+
   static std::string GenerateUID(const C&, UINT slot)
   {
     return GenerateUID(slot);
   }
+
   static std::string GenerateUID(UINT slot = 0)
   {
     using namespace std::string_literals;
 
     return typeid(VertexConstantBuffer).name() + "#"s + std::to_string(slot);
   }
+
   std::string GetUID() const noexcept override
   {
     return GenerateUID(m_slot);
@@ -117,19 +121,23 @@ public:
   {
     return Codex::Resolve<PixelConstantBuffer>(gfx, consts, slot);
   }
+
   static std::shared_ptr<PixelConstantBuffer> Resolve(Graphics& gfx, UINT slot = 0)
   {
     return Codex::Resolve<PixelConstantBuffer>(gfx, slot);
   }
+
   static std::string GenerateUID(const C&, UINT slot)
   {
     return GenerateUID(slot);
   }
+
   static std::string GenerateUID(UINT slot = 0)
   {
     using namespace std::string_literals;
     return typeid(PixelConstantBuffer).name() + "#"s + std::to_string(slot);
   }
+
   std::string GetUID() const noexcept override
   {
     return GenerateUID(m_slot);

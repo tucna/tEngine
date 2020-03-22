@@ -331,7 +331,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
     bindablePtrs.push_back(Bind::IndexBuffer::Resolve(gfx, meshTag, indices));
 
-    auto pvs = Bind::VertexShader::Resolve(gfx, "PhongVS.cso");
+    auto pvs = Bind::VertexShader::Resolve(gfx, "Phong_VS.cso");
     auto pvsbc = pvs->GetBytecode();
     bindablePtrs.push_back(std::move(pvs));
 
@@ -385,11 +385,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
     bindablePtrs.push_back(Bind::IndexBuffer::Resolve(gfx, meshTag, indices));
 
-    auto pvs = Bind::VertexShader::Resolve(gfx, "PhongVS.cso");
+    auto pvs = Bind::VertexShader::Resolve(gfx, "Phong_VS.cso");
     auto pvsbc = pvs->GetBytecode();
     bindablePtrs.push_back(std::move(pvs));
 
-    bindablePtrs.push_back(Bind::PixelShader::Resolve(gfx, "PhongPS.cso"));
+    bindablePtrs.push_back(Bind::PixelShader::Resolve(gfx, "Phong_PS.cso"));
 
     bindablePtrs.push_back(Bind::InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 

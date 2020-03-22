@@ -1,26 +1,31 @@
 #include "TransformConstantBuffer.h"
 
-using namespace Bind;
+std::unique_ptr<Bind::VertexConstantBuffer<Bind::TransformConstantBuffer::Transformations>> Bind::TransformConstantBuffer::m_Vcbuf;
 
-std::unique_ptr<VertexConstantBuffer<TransformConstantBuffer::Transformations>> TransformConstantBuffer::m_Vcbuf;
-
-TransformConstantBuffer::TransformConstantBuffer(Graphics& gfx, const Drawable& parent, UINT slot) :
+Bind::TransformConstantBuffer::TransformConstantBuffer(Graphics& gfx, const Drawable& parent, UINT slot) :
   m_parent(parent)
 {
   if (!m_Vcbuf)
     m_Vcbuf = std::make_unique<Bind::VertexConstantBuffer<Transformations>>(gfx, slot);
 }
 
-void TransformConstantBuffer::Bind(Graphics& gfx) noexcept
+void Bind::TransformConstantBuffer::Bind(Graphics& gfx) noexcept
 {
-  const auto model = m_parent.GetTransformXM();
+  UpdateBindImpl(gfx, GetTransforms(gfx));
+}
 
-  const Transformations tf =
-  {
-    DirectX::XMMatrixTranspose(model),
-    DirectX::XMMatrixTranspose(model * gfx.GetViewMatrix() * gfx.GetProjectionMatrix())
-  };
-
+void Bind::TransformConstantBuffer::UpdateBindImpl(Graphics& gfx, const Transformations& tf) noexcept
+{
   m_Vcbuf->Update(gfx, tf);
   m_Vcbuf->Bind(gfx);
+}
+
+Bind::TransformConstantBuffer::Transformations Bind::TransformConstantBuffer::GetTransforms(Graphics& gfx) noexcept
+{
+  const auto modelView = m_parent.GetTransformXM() * gfx.GetViewMatrix();
+
+  return {
+    DirectX::XMMatrixTranspose(modelView),
+    DirectX::XMMatrixTranspose(modelView * gfx.GetProjectionMatrix())
+  };
 }

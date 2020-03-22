@@ -32,6 +32,10 @@
 constexpr uint16_t windowWidth = 1280;
 constexpr uint16_t windowHeight = 720;
 
+constexpr float PI = 3.14159265f;
+
+constexpr double PI_D = 3.1415926535897932;
+
 namespace Utils
 {
   inline std::string To_string(std::wstring wstr) { std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> strconverter; return strconverter.to_bytes(wstr); }

@@ -4,11 +4,13 @@
 
 using namespace DirectX;
 
-Bind::Texture::Texture(Graphics& gfx, std::string_view path, bool mipmaps, UINT slot) :
+Bind::Texture::Texture(Graphics& gfx, std::string_view path, UINT slot) :
   m_path(path),
   m_slot(slot),
   m_hasAlpha(true) // TODO: fix this
 {
+  bool mipmaps = true; // TODO: make this better
+
   if (mipmaps)
   {
     CHECK_HR(CreateWICTextureFromFile(GetDevice(gfx), GetContext(gfx), Utils::To_wstring(path.data()).c_str(), nullptr, &m_textureView));
